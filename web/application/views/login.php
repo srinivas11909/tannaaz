@@ -64,14 +64,14 @@ $buttonBg2 = "#e2e2e2";
 		 .formerror {margin-top: 8px; color:red; font-size: 12px; display: none;}
 		 
 	  </style>
-	  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	  <script src="/public/js/jquery-1.8.0.min.js"></script>
    </head>
    <body>
 	  
 	  <div style='margin:50px auto 30px auto; text-align: center; width:500px;'><img src='/public/images/monitoring.png' height="60" style="opacity: 0.9" /></div>
 	  
 	  <div style="background:#f9f9f9; border:1px solid #eee; width:400px; margin:20px auto; padding:50px 50px 25px 50px;">
-		 <form method="POST" action="/AppMonitor/Dashboard/Login" id='loginForm' onsubmit="return submitForm()">
+		 <form method="POST" action="/CmsController/success" id='loginForm' onsubmit="return submitForm()">
 		 <div style='float:left; width:100px; margin-top:7px;'>Email</div>
 		 <div style='float:left;'><input type='text' name='username' id='email' class='inputbox' />
 		 <div class='formerror' id='email_error'>Please enter email</div>
@@ -120,9 +120,9 @@ $buttonBg2 = "#e2e2e2";
 			   return false;
 			}
 			else {
-			   $.post('/cmsPosting/doLogin',{'username':email,'mpassword':(password)},function(data) {
-				   if(parseInt(data) > 1) {
-					   window.location = '/cmsPosting/home';
+			   $.post('/UserController/doLogin',{'username':email,'mpassword':(password)},function(data) {
+				   if(parseInt(data) > 0) {
+					   window.location = '/CmsController/success';
 				   }
 				   else {
 					   $('#error_login').html('Incorrect account details. Please enter valid login email Id & password.');

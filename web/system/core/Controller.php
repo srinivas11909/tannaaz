@@ -58,6 +58,23 @@ class CI_Controller {
 	{
 		return self::$instance;
 	}
+	function checkUserValidation()
+	{
+		$cookie = isset($_COOKIE['user'])?$_COOKIE['user']:'';
+		if(empty($cookie))
+			return false;
+		else
+		{
+			$this->load->library('cmslibrary');
+			$userArray = $this->cmslibrary->checkValidUser($cookie,'login');
+			if(empty($userArray['userId']))
+			{
+				set_cookie('user','',time() - 864000,'/',COOKIEDOMAIN);
+				return 0;
+			}
+			return $userArray;
+		}
+	}
 }
 // END Controller class
 

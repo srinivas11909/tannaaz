@@ -1,0 +1,4 @@
+<?php 
+	$COOKIEDOMAIN = "";
+	define('COOKIEDOMAIN',$COOKIEDOMAIN);
+?>
