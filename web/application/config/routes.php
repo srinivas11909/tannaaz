@@ -44,6 +44,8 @@ $route['404_override'] = '';
 $route['cmsPosting/login'] = "CmsController/login";
 $route['cmsPosting/doLogin'] = "CmsController/doLogin";
 $route['cmsPosting/viewList'] = "CmsController/viewList";
+$route['cmsPosting/viewListings'] = "CmsController/viewListings";
+$route['cmsPosting/postListing'] = "CmsController/postListing";
 
 
 /* End of file routes.php */

@@ -12,4 +12,9 @@
 		}
 	}
 
+	function _p($data)
+	{
+	    echo '<pre>'.print_r($data,TRUE).'</pre>';
+	}
+
 ?>
