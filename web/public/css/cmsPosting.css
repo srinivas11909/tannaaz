@@ -1,0 +1,5 @@
+.select.error,.form-control.error{
+	border: 1px solid #E85445;
+}
+.error{color: #E85445}
+.hid{display: none;}

@@ -7,10 +7,6 @@ class CmsController extends CI_Controller{
 		parent::__construct();
 	}
 
-	function init(){
-		$this->load->library('cmslibrary');
-	}
-
 	function isLogin()
 	{
 		$loginUser = $this->checkUserValidation();
@@ -35,8 +31,7 @@ class CmsController extends CI_Controller{
 	}
 
 	function postListing(){
-		// $this->init();
-		$data = $this->load->library('cmslibrary');
+		$this->load->library('cmslibrary');
 		$categoryTree = $this->cmslibrary->getCategoriesTree();
 		$displayData['categoryTree'] = $categoryTree;
 
@@ -46,6 +41,18 @@ class CmsController extends CI_Controller{
 		// _p($displayData);die;
 
 		$this->load->view('cms/postListing', $displayData);
+	}
+
+	function saveListing(){
+		$data['productName'] = $this->input->post('productName');
+		$data['productDesc'] = $this->input->post('productDesc');
+		$data['category'] = $this->input->post('category');
+		$data['subcategory'] = $this->input->post('subcategory');
+		$data['attributes'] = $this->input->post('attributes');
+
+		$this->load->model('cmsmodel');
+		$newProductId = $this->cmsmodel->saveListing($data);
+		_p($newProductId);die;
 	}
 }
 ?>
