@@ -48,6 +48,9 @@ class CmsController extends CI_Controller{
         if($_FILES['uploads']) {
             $response = array();
             $response = $this->prepareUploadData($_FILES['uploads']);
+
+            $finalResponse = $response;
+
             if(!is_array($response) && $response != ""){
 				$finalResponse = array();
 				$finalResponse['file_url'] = $response;
@@ -129,6 +132,8 @@ class CmsController extends CI_Controller{
 		$data['category'] = $this->input->post('category');
 		$data['subcategory'] = $this->input->post('subcategory');
 		$data['attributes'] = $this->input->post('attributes');
+		$data['images']  = $this->input->post('images');
+		$data['files']  = $this->input->post('files');
 
 		$this->load->model('cmsmodel');
 		$newProductId = $this->cmsmodel->saveListing($data);

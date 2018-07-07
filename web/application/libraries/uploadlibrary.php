@@ -60,7 +60,6 @@ class uploadlibrary
 
 	            return $responseObj["error_msg"];
 			}
-
 	}
 	function fomratFileStreamData()
 	{

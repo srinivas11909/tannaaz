@@ -139,6 +139,8 @@ function initPostingForm(){
 				attributes[attributeId] = attribute;
 			});
 			postData['attributes'] = attributes;
+      postData['images'] = uploadedImages;
+      postData['files'] = uploadedFiles;
 			console.log(postData);
 
 			makeCustomAjaxCall('/cmsPosting/saveListing',postData, 'addListingCallback');
@@ -244,7 +246,6 @@ function updateSortOptions()
 
 function createHTML(no_of_files,obj,selected)
 {
-  console.log('obj',obj);
   var id = 'img_'+selected;
   $html = '<div id="'+id+'" class="cms-div">';
   $html += '<select id="'+id+'_select" class="cms-dropdown" name="position" onchange="changePosition('+selected+',\'img_'+selected+'_select\')">';
@@ -284,6 +285,7 @@ function uploadPdfForm(input,response)
     alert(response['data']['error']['msg']);
     $(input).parent().find('.progress-bar').css('width', '0%');
       $(input).parent().find('.progress-bar').css('display','none');
+      clearFileData('#samplepdf');
     return;
   }
   else
@@ -302,7 +304,6 @@ function changePosition(currentPosition,ele){
   valueObj = uploadedImages;
   var newPosition = parseInt($('#'+ele).val());
   var currentPosition = parseInt(currentPosition);
-console.log(uploadedImages,currentPosition,newPosition);
         if(currentPosition < newPosition){
           for(var pdf in valueObj){
             if(valueObj[pdf].position > currentPosition && valueObj[pdf].position <= newPosition){
