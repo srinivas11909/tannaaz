@@ -97,6 +97,42 @@
 									</div>
 								</div>
 							</div>
+
+							<div class="form-group">
+								<label class="control-label col-md-3 col-sm-3 col-xs-12" for="product-desc">Upload Pdf </label>
+								<div class="col-md-6 col-sm-6 col-xs-12">
+									<input name="samplepdf" type="file" id="samplepdf" onchange="uploadForm(samplepdf)"> 
+									<div aria-valuenow="100" class="progress-bar progress-bar-danger" data-transitiongoal="25" style="display: none;">100</div>
+				                     <div class="cms-div" style="display:none">
+				                         <input id="uploaded_name" type= "text" value="<?=!empty($applicationform['files']['file_name']) ? $applicationform['files']['file_name'] : '';?>" disabled class="cms-input">
+				                         <span class="cms-inline" class="viewform" id="viewform">
+				                                 <a class="btn cmsButton cmsFont" target="_blank" href="<?=!empty($applicationform['files']['file_url']) ? $applicationform['files']['file_url'] : ''?>">View uploaded form</a>
+				                        </span>
+				                        <span class="cms-inline" id="cross">
+				                                 <a class="btn btn-default" target="_blank" onclick="clearFileData(samplepdf)">X</a>
+				                        </span>
+				                    </div>
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="control-label col-md-3 col-sm-3 col-xs-12" for="product-desc">Upload Images </label>
+								<div class="col-md-6 col-sm-6 col-xs-12">
+									<input name="sampleimg" type="file" id="sampleimg" onchange="uploadForm(sampleimg,'img')"> 
+									<div aria-valuenow="100" class="progress-bar progress-bar-danger" data-transitiongoal="25" style="display: none;">100</div>
+				                     <div class="cms-div" style="display:none">
+				                         <input id="uploaded_name" type= "text" value="<?=!empty($applicationform['files']['file_name']) ? $applicationform['files']['file_name'] : '';?>" disabled class="cms-input">
+				                         <span class="cms-inline" class="viewform" id="viewform">
+				                                 <a class="btn cmsButton cmsFont" target="_blank" href="<?=!empty($applicationform['files']['file_url']) ? $applicationform['files']['file_url'] : ''?>">View uploaded form</a>
+				                        </span>
+				                        <span class="cms-inline" id="cross">
+				                                 <a class="btn btn-default" target="_blank" onclick="clearFileData(sampleimg)">X</a>
+				                        </span>
+				                    </div>
+								</div>
+								<div id="imagelist">
+					            </div>
+							</div>
 							
 							<div class="ln_solid"></div>
 							<div class="form-group">

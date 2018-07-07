@@ -3,7 +3,6 @@
 function initPostingForm(){
 	$(document).on('change','.cat-drpdwn',function(){
 		var categoryId = $(this).val();
-		console.log(categoryId);
 		if(categoryId){
 			$(this).closest('.form-group').find('.subcat-drpdwn').children().each(function(index,ele){
 				if($(this).attr('categoryId') == categoryId){
@@ -26,7 +25,6 @@ function initPostingForm(){
 		if(selectedAttributes && selectedAttributes.length > 0){
 			for (var i = 0; i < selectedAttributes.length; i++) {
 				var attributeId = selectedAttributes[i];
-				console.log(attributeId);
 				$('.smple-attr').find('.attr-div').attr("attributeId",attributeId);
 				$('.smple-attr').find('.control-label').get(0).innerHTML = attributeList[attributeId]['attributeName'];
 				$('.attr-cntner').html($('.attr-cntner').html() + $('.smple-attr').find('.attr-div').get(0).outerHTML);
@@ -50,6 +48,192 @@ function initPostingForm(){
 		console.log('submit clicked');
 		return false;
 	}
+}
+
+function uploadForm(input,file_type)
+{
+	if(input.files.length == 0) {
+		alert('not selected');
+          return false;
+    }
+
+    var selectedpdf = new FormData();
+    var postUrl = "/CmsController/uploadPdf";
+    if(file_type == 'img')
+    {
+      postUrl ="/CmsController/uploadMedia";
+    }
+    var FileList = input.files;
+       for (var i = 0, length = FileList.length; i < length; i++) {
+         selectedpdf.append("uploads[]",FileList.item(i), FileList.item(i).name);
+    }
+    $.ajax({
+    	type : 'POST',
+    	url : postUrl,
+    	data : selectedpdf,
+    	processData: false,
+		contentType: false,
+    	xhr: function () {
+                            var xhr = new window.XMLHttpRequest();
+                            xhr.upload.addEventListener("progress", function (evt) {
+                                if (evt.lengthComputable) {
+                                    var percentComplete = evt.loaded / evt.total;
+                                    percentComplete = parseInt(percentComplete * 100);
+                                    $(input).parent().find('.progress-bar').text(percentComplete + '%');
+                                    $(input).parent().find('.progress-bar').css('display','block');
+                                    $(input).parent().find('.progress-bar').css('width', percentComplete + '%');
+                                }
+                            }, false);
+                            return xhr;
+                        },
+    success : function(response){
+    	response = JSON.parse(response);
+        if(file_type == 'img')
+        {
+          uploadMultipleFiles(file_type,input,response);
+        }
+        else
+        {
+          uploadPdfForm(input,response);  
+        }
+    },
+    error : function(jqXHR, textStatus, errorThrown)
+    {
+    	alert(errorThrown);
+    	if(typeof file_type == 'undefined')
+    	{
+    		clearFileData('#samplepdf');
+    	}
+    	$(input).parent().find('.progress-bar').css('width', '0%');
+    	$(input).parent().find('.progress-bar').css('display','none');
+		return;
+    } 
+});
+}
+
+var uploadedImages = [];
+function uploadMultipleFiles(file_type,object,response)
+{
+  //var response = uploadForm(object);
+  if(response['data']['error'])
+  {
+    alert(response['data']['error']['msg']);
+    $(object).parent().find('.progress-bar').css('width', '0%');
+      $(object).parent().find('.progress-bar').css('display','none');
+    return;
+  }
+  else
+  {
+      var no_of_img = Object.keys(uploadedImages).length + 1;
+      uploadedImages[no_of_img-1] = {'img_url' : response['data']['imageurl'],'position':no_of_img};  
+      updateSortOptions();
+      $(object).parent().find('.progress-bar').css('width', '0%');
+      $(object).parent().find('.progress-bar').css('display','none');
+  }
+}
+function updateSortOptions()
+{
+  var html = '';
+    var no_of_img = Object.keys(uploadedImages).length;
+    for(i in uploadedImages)
+    {
+       html += createHTML(no_of_img,uploadedImages[i],parseInt(i)+1);
+    }
+    $('#imagelist').html(html); 
+}
+
+function createHTML(no_of_files,obj,selected)
+{
+  console.log('obj',obj);
+  var id = 'img_'+selected;
+  $html = '<div id="'+id+'" class="cms-div">';
+  $html += '<select id="'+id+'_select" class="cms-dropdown" name="position" onchange="changePosition('+selected+',\'img_'+selected+'_select\')">';
+  for(var i=1 ;i <= no_of_files ; i++)
+  {
+    if(typeof selected != 'undefined' && i == selected)
+    {
+      $html += '<option value="'+i+'" selected>'+i+'</option>';
+    }
+    else
+    {
+      $html += '<option value="'+i+'">'+i+'</option>';  
+    }
+    
+  }
+  $html += '</select>';
+  $html += '<span class="viewform cms-inline" id="viewform"><a class="btn cmsButton cmsFont" target="_blank" href="'+obj['img_url']+'">View</a></span>';
+  $html += '<span class="cms-inline" id="cross"><a class="btn btn-default" target="_blank" onclick="removeFileFromMultiple('+selected+')">X</a></span>';
+  $html += '</div>';
+  return $html;
+}
+
+function clearFileData(input) {
+    $(input).parent().find('.cms-div > #viewform > a').attr('href','');
+    $(input).parent().find('.cms-div').css('display','none');
+    $(input).parent().find('.progress-bar').css('width', '0%');
+    $(input).parent().find('.progress-bar').css('display','none');
+    uploadedFiles = {};
+}
+
+var uploadedFiles = [];
+function uploadPdfForm(input,response)
+{
+  if(response['data']['error'])
+  {
+    uploadedFiles = [];
+    alert(response['data']['error']['msg']);
+    $(input).parent().find('.progress-bar').css('width', '0%');
+      $(input).parent().find('.progress-bar').css('display','none');
+    return;
+  }
+  else
+  {
+
+    uploadedFiles = {'file_url' : response['data']['file_url'],'file_name' : response['data']['file_name'],'file_relative_url' : response['data']['file_relative_url']};
+    $(input).parent().find('.cms-div').css('display','block');
+    $(input).parent().find('.cms-div > #uploaded_name').val(response['data']['file_name']);
+    $(input).parent().find('.cms-div > #viewform > a').attr('href',response['data']['file_url']);
+    $(input).parent().find('.progress-bar').css('width', '0%');
+      $(input).parent().find('.progress-bar').css('display','none');
+  }
+}
+
+function changePosition(currentPosition,ele){
+  valueObj = uploadedImages;
+  var newPosition = parseInt($('#'+ele).val());
+  var currentPosition = parseInt(currentPosition);
+console.log(uploadedImages,currentPosition,newPosition);
+        if(currentPosition < newPosition){
+          for(var pdf in valueObj){
+            if(valueObj[pdf].position > currentPosition && valueObj[pdf].position <= newPosition){
+              --valueObj[pdf].position;
+            }
+          }
+          valueObj[currentPosition-1]['position'] = newPosition;  
+        }else{
+          for(var pdf in valueObj){
+            if(valueObj[pdf].position >= newPosition && valueObj[pdf].position < currentPosition){
+              ++valueObj[pdf].position;
+            }
+          }
+          valueObj[currentPosition-1]['position'] = newPosition;
+        }
+
+        valueObj.sort(function(a,b){
+          return (a['position'] < b['position']) ? -1 : (a['position'] > b['position']) ? 1 : 0;
+        });
+        updateSortOptions();
+}
+
+function removeFileFromMultiple(index,file_type)
+{
+  var object = {};
+  $.each(uploadedImages,function(file){
+      if(uploadedImages[file].position > index)
+        --uploadedImages[file].position;
+    });
+    uploadedImages.splice(index-1,1);
+    updateSortOptions();
 }
 
 var makeCustomAjaxCall = function(methodUrl, postParams, callBack, callBackCustomParams) {
