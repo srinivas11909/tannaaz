@@ -13,6 +13,7 @@
         <link href="/public/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
         <!-- NProgress -->
         <link href="/public/vendors/nprogress/nprogress.css" rel="stylesheet">
+        <link href="/public/css/cmsPosting.css" rel="stylesheet">
         <!-- Custom styling plus plugins -->
         <link href="/public/build/css/custom.min.css" rel="stylesheet">
     </head>

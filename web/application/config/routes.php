@@ -46,6 +46,7 @@ $route['cmsPosting/doLogin'] = "CmsController/doLogin";
 $route['cmsPosting/viewList'] = "CmsController/viewList";
 $route['cmsPosting/viewListings'] = "CmsController/viewListings";
 $route['cmsPosting/postListing'] = "CmsController/postListing";
+$route['cmsPosting/saveListing'] = "CmsController/saveListing";
 
 
 /* End of file routes.php */
