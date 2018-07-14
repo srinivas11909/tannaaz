@@ -26,6 +26,12 @@ class CmsController extends CI_Controller{
 		echo "success";
 	}
 
+	function deleteListing($listingId){
+		$this->load->model('cmsmodel');
+		$this->cmsmodel->deleteListing($listingId);
+		echo json_encode(array('data' => array('message' => 'Listing with id: '.$listingId.' deleted successfully','status' => 'success')));
+	}
+
 	function viewListings(){
 		$this->load->model('cmsmodel');
 		$this->load->library('cmslibrary');

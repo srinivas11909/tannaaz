@@ -26,7 +26,7 @@
                                     foreach ($listings as $row) {
                                         ?>
                                         <tr role="row" class="odd parent" style="background-color:#fff;">
-                                            <td tabindex="0" style="cursor:pointer;font-weight:bold;" (click)="openOptionsForCourses(courseInfo.course_id,courseInfo.status,courseInfo.name)"><?php  echo $row['id']; ?></td>
+                                            <td tabindex="0" style="cursor:pointer;font-weight:bold;"><?php  echo $row['id']; ?></td>
                                             <td><?php  echo $row['name']; ?></td>
                                             <td><?php  echo $row['category_name']; ?></td>
                                             <td><?php  echo $row['subcategory_name']; ?></td>
@@ -36,7 +36,7 @@
                                             <td class="child" colspan="8">
                                                 <a  class="btn cmsButton cmsFont" href="/cmsPosting/editListing/<?php echo $row['id']; ?>">Edit Listing</a>
                                                 <a  class="btn cmsButton cmsFont" target="_blank" href="/a/course/-{{courseInfo.course_id}}" role="button">View Listing</a>
-                                                <a class="btn cmsButton cmsFont" role="button" (click)="buttonAction('delete','',courseInfo.pack_type)" >Delete Listing</a>
+                                                <a class="btn cmsButton cmsFont vdle-btn" listId="<?php echo $row['id']; ?>" role="button">Delete Listing</a>
                                             </td>
                                         </tr>
                                         <?php 

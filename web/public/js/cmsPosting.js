@@ -42,6 +42,12 @@ function initPostingForm(){
         fetchListingsByFilters();
     });
 
+    $(document).on('click', '.vdle-btn', function(){
+        var listingId = $(this).attr('listId');
+        var postData = {};
+        makeCustomAjaxCall("/CmsController/deleteListing/"+listingId, postData, 'addListingCallback');
+    });
+
     $(document).on('click','.odd.parent', function(){
         var ele = $(this).next();
         if($(ele).hasClass('hid')){

@@ -165,5 +165,28 @@ class cmsmodel extends CI_Model{
 		}
 		return $returnData;
 	}
+
+	public function deleteListing($listingId){
+		$this->db->trans_start();
+
+		$this->db->where('id', $listingId);
+		$this->db->delete('products');
+
+		$this->db->where('product_id', $listingId);
+		$this->db->update('product_attributes', array('status' => 'deleted'));
+
+		$this->db->where('product_id', $listingId);
+		$this->db->update('product_category_mapping', array('status' => 'deleted'));
+
+		$this->db->where('product_id', $listingId);
+		$this->db->update('product_media', array('status' => 'deleted'));
+
+		$this->db->trans_complete();
+    	if ($this->db->trans_status() === FALSE) {
+    		throw new Exception('Transaction Failed');
+    	}
+
+    	return true;
+	}
 }
 ?>
