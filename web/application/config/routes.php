@@ -43,10 +43,10 @@ $route['404_override'] = '';
 
 $route['cmsPosting/login'] = "CmsController/login";
 $route['cmsPosting/doLogin'] = "CmsController/doLogin";
-$route['cmsPosting/viewList'] = "CmsController/viewList";
 $route['cmsPosting/viewListings'] = "CmsController/viewListings";
 $route['cmsPosting/postListing'] = "CmsController/postListing";
 $route['cmsPosting/saveListing'] = "CmsController/saveListing";
+$route['cmsPosting/editListing/([0-9]+)'] = "CmsController/editListing/$1";
 $route['aboutus'] = "HomePage/aboutUs";
 
 

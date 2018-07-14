@@ -93,12 +93,25 @@
 									<div class="form-group">
 										<label class="control-label col-md-3 col-sm-3 col-xs-12"></label>
 										<div class="col-md-5 col-sm-5 col-xs-10">
-											<div class="col-md-3 col-sm-3 col-xs-6"><input type="number" class="val1 form-control col-md-1 col-xs-2"></div>
-											<div class="col-md-offset-2 col-md-3 col-sm-3 col-xs-6"><input type="number" class="val2 form-control col-md-1 col-xs-2"></div>
+											<div class="col-md-3 col-sm-3 col-xs-6"><input type="text" class="val1 form-control col-md-1 col-xs-2"></div>
+											<div class="col-md-offset-2 col-md-3 col-sm-3 col-xs-6"><input type="text" class="val2 form-control col-md-1 col-xs-2"></div>
 											<div class="col-md-1 col-sm-1 col-xs-2">/</div>
-											<div class="col-md-3 col-sm-3 col-xs-6"><input type="number" class="val3 form-control col-md-1 col-xs-2"></div>
+											<div class="col-md-3 col-sm-3 col-xs-6"><input type="text" class="val3 form-control col-md-1 col-xs-2"></div>
 										</div>
-										<div class="col-md-3 col-sm-3 col-xs-6"><button class="btn btn-primary rmvattr" type="button">Remove</button></div>
+										<div class="col-md-3 col-sm-3 col-xs-6">
+											<div class="col-md-5 col-sm-1 col-xs-2">
+												<select class="form-control unit">
+													<?php 
+													foreach ($units as $row) {
+														?>
+														<option value="<?php echo $row['unit_id']; ?>"><?php echo $row['name']; ?></option>
+														<?php
+													}
+													?>
+												</select>
+											</div>
+											<button class="btn btn-primary rmvattr" type="button">Remove</button>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -119,6 +132,9 @@
 				                    </div>
 								</div>
 							</div>
+
+							<input type="hidden" name="actionType" id="actionType" value="<?php echo $actionType; ?>">
+							<input type="hidden" name="listingId" id="listingId" value="<?php echo $listingId; ?>">
 
 							<div class="form-group">
 								<label class="control-label col-md-3 col-sm-3 col-xs-12" for="product-desc">Upload Images </label>
@@ -159,4 +175,67 @@ $this->load->view('cms/cmsFooter');
 <script>
 	initPostingForm();
 	var attributeList = JSON.parse('<?php echo json_encode($attributeList); ?>');
+	var editData = JSON.parse('<?php echo json_encode($editData); ?>');
+	var actionType = "<?php echo $actionType; ?>";
+	var uploadedFiles = {};
+	var uploadedImages = [];
+	
+	function fillEditData(){
+		$('#product-name').val(editData['name']);
+		$('#product-desc').val(editData['description']);
+		$('.cat-drpdwn').val(editData['category_id']);
+		$('.cat-drpdwn').trigger('change');
+		if(editData['subcategory_id']){
+			$('.subcat-drpdwn').val(editData['subcategory_id']);
+		}
+		var attributeData = {};
+		if(editData['attributes'] && editData['attributes'].length > 0){
+			var attributeIds = [];
+			for(var i =0 ; i < editData['attributes'].length; i++){
+				attributeIds.push(editData['attributes'][i]['attribute_id']);
+				attributeData[editData['attributes'][i]['attribute_id']] = editData['attributes'][i];
+			}
+			$('.attr-opts').val(attributeIds);
+			$('.addattr').trigger('click');
+		}
+		for(var attributeId in attributeData){
+			$('.attr-cntner').find('.attr-div').each(function(index,ele){
+				if($(ele).attr('attributeId') == attributeId){
+					$(ele).find('input.val1').val(attributeData[attributeId]['value_1']);
+					if(attributeData[attributeId]['value_2'] && attributeData[attributeId]['value_2'] != 0){
+						$(ele).find('input.val2').val(attributeData[attributeId]['value_2']);
+					}
+					if(attributeData[attributeId]['value_3'] && attributeData[attributeId]['value_3'] != 0){
+						$(ele).find('input.val3').val(attributeData[attributeId]['value_3']);
+					}
+				}
+			});
+		}
+		if(editData['media']['image']){
+			for(var i = 0; i < editData['media']['image'].length; i++){
+				var temp = {};
+				temp['img_url'] = editData['media']['image'][i]['media_url'];
+				temp['position'] = editData['media']['image'][i]['position'];
+				uploadedImages.push(temp);
+			}
+			if(uploadedImages.length > 0){
+				updateSortOptions();
+			}
+		}
+		if(editData['media']['file']){
+			var temp = {};
+			for(var i = 0; i < editData['media']['file'].length; i++){
+				temp['file_url'] = editData['media']['file'][i]['media_url'];
+				temp['file_name'] = editData['media']['file'][i]['file_name'];
+			}
+			if(temp['file_url']){
+				var response = {'data' : temp};
+				uploadPdfForm(samplepdf, response);
+			}
+		}
+	}
+
+	if(editData){
+		fillEditData();
+	}
 </script>

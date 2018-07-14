@@ -21,6 +21,64 @@ function initPostingForm(){
 		$(this).closest('.form-group').find('.subcat-drpdwn').val('');
 	});
 
+    $(document).on('change','.vcat-drpdwn',function(){
+        var categoryId = $(this).val();
+        if(categoryId){
+            $(this).closest('.cat-drdwns').find('.vsubcat-drpdwn').children().each(function(index,ele){
+                if($(this).attr('categoryId') == categoryId){
+                    $(this).show();
+                }
+                else{
+                    $(this).hide();
+                }
+            });
+        }
+        else{
+            $(this).closest('.cat-drdwns').find('.vsubcat-drpdwn').children().each(function(index,ele){
+                $(this).show();
+            });
+        }
+        $(this).closest('.cat-drdwns').find('.vsubcat-drpdwn').val('');
+        fetchListingsByFilters();
+    });
+
+    $(document).on('click','.odd.parent', function(){
+        var ele = $(this).next();
+        if($(ele).hasClass('hid')){
+            $(ele).removeClass('hid');
+        }
+        else{
+            $(ele).addClass('hid');
+        }
+    });
+
+    $(document).on('click','.addListBtn', function(){
+        window.location.href = "/cmsPosting/postListing";
+    });
+
+    $(document).on('change','.vsubcat-drpdwn',function(){
+        fetchListingsByFilters();
+    });    
+
+    $(document).on('click','.listId-btn',function(){
+        fetchListingsByFilters();
+    });
+
+    $(document).on('click', 'ul.pagination li a', function(){
+        if($(this).closest('li').hasClass('active')){
+            return;
+        }
+        fetchListingsByFilters($(this).closest('li').attr('pageNumber'));
+    });
+
+    function fetchListingsByFilters(pageNumber){
+        var postData = {'categoryId': $('.vcat-drpdwn').val(), 'subCategoryId' : $('.vsubcat-drpdwn').val(), 'listingId' : $('.listId').val(), 'callType': 'ajax'};
+        if(typeof pageNumber != 'undefined' && pageNumber != ''){
+            postData['currentPage'] = pageNumber;
+        }
+        makeCustomAjaxCall('/CmsController/viewListings',postData, 'fetchListingsByFiltersCallback');
+    }
+
 	$(document).on('click','.addattr',function(){
 		var selectedAttributes = $('.attr-opts').val();
 		if(selectedAttributes && selectedAttributes.length > 0){
@@ -124,7 +182,9 @@ function initPostingForm(){
 		if(!errorsPresent){
 			var postData = {};
 			postData['productName'] = $('#product-name').val().trim();
-			postData['productDesc'] = $('#product-desc').val().trim();
+            postData['productDesc'] = $('#product-desc').val().trim();
+            postData['actionType'] = $('#actionType').val();
+			postData['listingId'] = $('#listingId').val();
 			postData['category'] = $('.cat-drpdwn').val();
 			postData['subcategory'] = $('.subcat-drpdwn').val();
 
@@ -134,22 +194,34 @@ function initPostingForm(){
 				var attribute = {};
 				attribute['val1'] = $(this).find('input.val1').val();
 				attribute['val2'] = $(this).find('input.val2').val();
-				attribute['val3'] = $(this).find('input.val3').val();
+                attribute['val3'] = $(this).find('input.val3').val();
+				attribute['unit'] = $(this).find('select.unit').val();
 
 				attributes[attributeId] = attribute;
 			});
 			postData['attributes'] = attributes;
-      postData['images'] = uploadedImages;
-      postData['files'] = uploadedFiles;
+            postData['images'] = uploadedImages;
+            postData['files'] = uploadedFiles;
 			console.log(postData);
 
 			makeCustomAjaxCall('/cmsPosting/saveListing',postData, 'addListingCallback');
 		}
 	}
+}
 
-	function addListingCallback(){
+function fetchListingsByFiltersCallback(response){
+    $('.tble-wrpper').html(response['html']);
+}
 
-	}
+function addListingCallback(response){
+    if(response['data']['status'] == 'success'){
+        alert(response['data']['message']);
+        window.location.href = '/cmsPosting/viewListings';
+    }
+    else{
+        alert('Internal server error');
+        console.log(response);
+    }
 }
 
 function uploadForm(input,file_type)
@@ -213,7 +285,6 @@ function uploadForm(input,file_type)
 });
 }
 
-var uploadedImages = [];
 function uploadMultipleFiles(file_type,object,response)
 {
   //var response = uploadForm(object);
@@ -276,7 +347,6 @@ function clearFileData(input) {
     uploadedFiles = {};
 }
 
-var uploadedFiles = [];
 function uploadPdfForm(input,response)
 {
   if(response['data']['error'])
@@ -338,17 +408,25 @@ function removeFileFromMultiple(index,file_type)
 }
 
 var makeCustomAjaxCall = function(methodUrl, postParams, callBack, callBackCustomParams) {
-  var params = {};
-  for(var key in postParams){
+  var postData = {},requestParams;
+    for(key in postParams){
         if(postParams.hasOwnProperty(key)){
-      params[key] = postParams[key];
+            postData[key] = postParams[key];
         }
     }
-  var request = $.ajax({
-    url   : methodUrl,
-    type  : "POST",
-    data  : params
-  });
+    requestParams = {
+        url     : methodUrl,
+        type    : "POST",
+        data    : postData
+    };
+    if(postParams && typeof postParams['ajaxContext'] != 'undefined'){
+        if($(postParams['ajaxContext']).data('requestRunning')){
+            return;
+        }
+        $(postParams['ajaxContext']).data('requestRunning',true);
+        requestParams['ajaxContext'] = postParams['ajaxContext'];
+    }
+    var request = $.ajax(requestParams);
   request.done(function(data) {
     if (typeof callBack != 'undefined' && callBack != '') {
       var fn = window[callBack];
@@ -359,4 +437,10 @@ var makeCustomAjaxCall = function(methodUrl, postParams, callBack, callBackCusto
     }
   });
   request.fail(function(xhrObject, status){});
+    request.always(function(){
+        if(typeof requestParams['ajaxContext'] != 'undefined'){
+            $(requestParams['ajaxContext']).data('requestRunning',false);
+        }
+    });
+    return request;
 }

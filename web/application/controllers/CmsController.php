@@ -27,21 +27,139 @@ class CmsController extends CI_Controller{
 	}
 
 	function viewListings(){
-		$this->load->view('cms/viewListings');
+		$this->load->model('cmsmodel');
+		$this->load->library('cmslibrary');
+
+		$categoryId = $this->input->post('categoryId',true);
+		$subCategoryId = $this->input->post('subCategoryId',true);
+		$listingId = $this->input->post('listingId',true);
+		$callType = $this->input->post('callType',true);
+		$currentPage = $this->input->post('currentPage',true) == '' ? 1 : $this->input->post('currentPage',true);
+
+		$listings = array();
+		$pageLimit = 4;
+		$offset = ($currentPage - 1)*$pageLimit;
+		$numberOfPagesToShow = 3;
+
+		if(!empty($listingId)){
+			$data = $this->cmsmodel->getListingById($listingId);
+			if(!empty($data)){
+				$listings[] = $data;
+			}
+			$totalCount = 1;
+		}
+		else if(!empty($categoryId) || !empty($subCategoryId)){
+			$data = $this->cmsmodel->getProductsByCategoryAndSubcategory($categoryId, $subCategoryId, $offset, $pageLimit);
+			$listings = $data['data'];
+			$totalCount = $data['totalCount'];
+		}
+		else{
+			$data = $this->cmsmodel->getAllListings($offset,$pageLimit);
+			$listings = $data['data'];
+			$totalCount = $data['totalCount'];
+		}
+
+		$maxPagesPossible = ceil($totalCount/$pageLimit);
+		$pageNumbers = array();
+		for($i=0; $i< $maxPagesPossible; $i++){
+			$pageNumbers[] = $i;
+		}
+		$previousPages = array();$nextPages = array();
+		if($maxPagesPossible <= $numberOfPagesToShow){
+			foreach ($pageNumbers as $pageNumber) {
+				if($pageNumber+1 < $currentPage){
+					$previousPages[] = $pageNumber+1;
+				}
+				else if($pageNumber+1 > $currentPage){
+					$nextPages[] = $pageNumber + 1;
+				}
+			}
+		}
+		else{
+			$temp = ($numberOfPagesToShow - 1)/2;
+			$startIndex = ($currentPage - 1) - floor($temp);
+			$endIndex = ($currentPage - 1) + floor($temp);
+
+			if($startIndex < 0){
+				$endIndex -= $startIndex;
+				$startIndex = 0;
+			}
+			else if($endIndex > $maxPagesPossible - 1){
+				$startIndex -= ($endIndex+1 - $maxPagesPossible);
+				$endIndex = $maxPagesPossible - 1;
+			}
+			for($i =$startIndex; $i <= $endIndex; $i++){
+				$pageNumber = $pageNumbers[$i] + 1;
+				if($pageNumber < $currentPage){
+					$previousPages[] = $pageNumber;
+				}
+				else if($pageNumber > $currentPage){
+					$nextPages[] = $pageNumber;
+				}
+			}
+		}
+
+		$displayData = array();
+		$displayData['listings'] = $listings;
+		$displayData['totalCount'] = $totalCount;
+		$displayData['currentPage'] = $currentPage;
+		$displayData['previousPages'] = $previousPages;
+		$displayData['nextPages'] = $nextPages;
+		$displayData['maxPagesPossible'] = $maxPagesPossible;
+
+		$categoryTree = $this->cmslibrary->getCategoriesTree();
+		$displayData['categoryTree'] = $categoryTree;
+
+		if($callType == 'ajax'){
+			$html = $this->load->view('cms/cmsListingsTable', $displayData, true);
+			echo json_encode(array('html' => $html));
+		}
+		else{
+			$this->load->view('cms/viewListings', $displayData);
+		}
 	}
 
 	function postListing(){
 		$this->load->library('cmslibrary');
+		$this->load->config('listingConfig');
+
 		$categoryTree = $this->cmslibrary->getCategoriesTree();
 		$displayData['categoryTree'] = $categoryTree;
+		$displayData['units'] = $this->config->item('units');
 
 		$attributeList = $this->cmslibrary->getAttributeList();
 		$displayData['attributeList'] = $attributeList;
+		$displayData['actionType'] = 'add';
 
 		// _p($displayData);die;
 
 		$this->load->view('cms/postListing', $displayData);
 	}
+
+	function editListing($listingId){
+		$this->load->library('cmslibrary');
+		$this->load->model('cmsmodel');
+		$this->load->config('listingConfig');
+
+		$categoryTree = $this->cmslibrary->getCategoriesTree();
+		$displayData['categoryTree'] = $categoryTree;
+		$displayData['units'] = $this->config->item('units');
+
+		$attributeList = $this->cmslibrary->getAttributeList();
+		$displayData['attributeList'] = $attributeList;
+
+		$displayData['actionType'] = 'edit';
+		$displayData['listingId'] = $listingId;
+
+		$editData = $this->cmsmodel->getListingData($listingId);
+		// _p($editData);die;
+		$displayData['editData'] = $editData;
+
+		// _p($displayData);die;
+
+		$this->load->view('cms/postListing', $displayData);
+	}
+
 	function uploadPdf()
 	{
 		$response['data'] = array('error' => array('msg' => 'Unable to upload file due to incorrect data'));
@@ -133,11 +251,24 @@ class CmsController extends CI_Controller{
 		$data['subcategory'] = $this->input->post('subcategory');
 		$data['attributes'] = $this->input->post('attributes');
 		$data['images']  = $this->input->post('images');
-		$data['files']  = $this->input->post('files');
+		$data['actionType']  = $this->input->post('actionType');
+		$data['listingId']  = $this->input->post('listingId');
+
+		$files  = $this->input->post('files');
+		$data['files'] = array();
+		if(!empty($files)){
+			$data['files'][] = $files;
+		}
 
 		$this->load->model('cmsmodel');
 		$newProductId = $this->cmsmodel->saveListing($data);
-		_p($newProductId);die;
+		if($data['actionType'] == 'edit'){
+			$message = 'Edited listing with id: '.$newProductId;
+		}
+		else{
+			$message = 'Added new listing with id: '.$newProductId;
+		}
+		echo json_encode(array('data' => array('message' => $message,'status' => 'success')));
 	}
 }
 ?>

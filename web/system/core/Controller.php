@@ -58,6 +58,7 @@ class CI_Controller {
 	{
 		return self::$instance;
 	}
+	
 	function checkUserValidation()
 	{
 		$cookie = isset($_COOKIE['user'])?$_COOKIE['user']:'';
