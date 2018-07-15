@@ -4,6 +4,7 @@ class HomePage extends CI_Controller
 
 	function index()
 	{
+		print_r($this);
 		$this->load->view('frontend/homepage');
 	}
 

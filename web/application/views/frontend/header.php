@@ -103,7 +103,7 @@
                <div class="categeory_block">
                  <div class="srchBlock">
                    <div class="CategoryStep">
-                     <input type="text" name="" placeholder="Search.." class="srchme" />
+                     <input type="text" name="" placeholder="Search.." onkeypress="getSearchText(event,this)" class="srchme" />
                      <i class="srch_ico"></i>
                    </div>
                  </div>
