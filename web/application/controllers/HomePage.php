@@ -68,5 +68,16 @@ class HomePage extends CI_Controller
 			echo json_encode(array('data'=> 'some error occured'));	
 		}
 	}
+	function search()
+	{
+		$this->load->model('cmsmodel');
+		$this->load->model('detailmodel');
+		$searchText = $_GET['q'];
+		$results = $this->detailmodel->getProductsBasedOnSearch($searchText);
+		$displayData = array();
+		$displayData['listingData'] = $results;
+		$displayData['searchCount'] = count($results);
+		$this->load->view('frontend/categorypage',$displayData);
+	}
 }
 ?>
