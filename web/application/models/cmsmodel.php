@@ -206,5 +206,18 @@ class cmsmodel extends CI_Model{
 
     	return true;
 	}
+
+	public function getMedia($listingIds){
+		$this->db->select('product_id,media_url,media_type, file_name,position')->where('status','live');
+		$this->db->where_in('product_id', $listingIds);
+		$this->db->order_by('position','asc');
+		$mediaData = $this->db->get('product_media')->result_array();
+
+		$returnData = array();
+		foreach ($mediaData as $row) {
+			$returnData[$row['product_id']][$row['media_type']][$row['position']] = array('file_name' => $row['file_name'],'url' => $row['media_url']);
+		}
+		return $returnData;
+	}
 }
 ?>

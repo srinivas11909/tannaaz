@@ -50,6 +50,7 @@ $route['cmsPosting/editListing/([0-9]+)'] = "CmsController/editListing/$1";
 $route['aboutus'] = "HomePage/aboutUs";
 $route['contactus'] = "HomePage/contactUs";
 $route['policy'] = "HomePage/policyView";
+$route['getListings/([0-9]+)/([0-9]+)'] = "CategoryPage/getCategoryPage/$1/$2";
 
 
 

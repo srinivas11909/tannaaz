@@ -4,21 +4,30 @@ function initPostingForm(){
 	$(document).on('change','.cat-drpdwn',function(){
 		var categoryId = $(this).val();
 		if(categoryId){
+            var count = 0;var subCategoryId = 0;
 			$(this).closest('.form-group').find('.subcat-drpdwn').children().each(function(index,ele){
 				if($(this).attr('categoryId') == categoryId){
 					$(this).show();
+                    subCategoryId = $(this).val();
+                    count++;
 				}
 				else{
 					$(this).hide();
 				}
 			});
+            if(count == 1){
+                $('.subcat-drpdwn').val(subCategoryId);
+            }
+            else{
+                $(this).closest('.form-group').find('.subcat-drpdwn').val('');
+            }
 		}
 		else{
 			$(this).closest('.form-group').find('.subcat-drpdwn').children().each(function(index,ele){
 				$(this).show();
 			});
+            $(this).closest('.form-group').find('.subcat-drpdwn').val('');
 		}
-		$(this).closest('.form-group').find('.subcat-drpdwn').val('');
 	});
 
     $(document).on('change','.vcat-drpdwn',function(){
