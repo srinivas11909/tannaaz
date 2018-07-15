@@ -83,8 +83,7 @@ class CmsController extends CI_Controller{
             
             $this->load->library('uploadlibrary');
 
-            	
-            	error_log('----------------'.print_r($uploadArrData,true));
+
             $upload_array = $this->uploadlibrary->uploadFile('pdf',array('pdf' => $uploadArrData));
 
             if(is_array($upload_array) && $upload_array['status'] == 1) {
@@ -108,13 +107,13 @@ class CmsController extends CI_Controller{
 		$uploadArrData = array();
 		$listingMediaType = 'photo';
 		$uploadArrData = $_FILES['uploads'];
+
 		if(empty($uploadArrData['tmp_name'][0])) {
-			return;
+            return;
 		}
 
 		$this->load->library('uploadlibrary');
 		$uploadResponse = $this->uploadlibrary->uploadFile('image',array('image' => $uploadArrData));
-
 		if($uploadResponse['status'] == 1) {
 			unset($response['data']['error']);
 			$response['data'] = array("imageurl" 	=> $uploadResponse[0]['imageurl']);

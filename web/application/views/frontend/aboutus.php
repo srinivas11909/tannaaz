@@ -10,21 +10,21 @@
          <div class="row">
            <div class="col-lg-3">
              <div class="about_data">
-               <div class="about_title">
-                 <a href="javascript:void(0);" id="history">History</a>
+               <div class="about_title <?php echo ($pagetype == 'history') ? 'active' : ''?>">
+                 <a href="javascript:void(0);" id="history" class="aboutus">History</a>
                </div>
-               <div class="about_title">
-                 <a href="javascript:void(0);">Process</a>
+               <div class="about_title <?php echo ($pagetype == 'process') ? 'active' : ''?>">
+                 <a href="javascript:void(0);" id="process" class="aboutus">Process</a>
                </div>
-               <div class="about_title">
-                 <a href="javascript:void(0);">Patina</a>
+               <div class="about_title <?php echo ($pagetype == 'patina') ? 'active' : ''?>">
+                 <a href="javascript:void(0);" id="patina" class="aboutus">Patina</a>
                </div>
              </div>
            </div>
 
            <div class="col-lg-9">
               <div class="about_details">
-                <div class="history contact" style="display: none" id="history">
+                <div class="show_about history contact <?php echo ($pagetype == 'history') ? 'show' : 'hide'?>" id="history_s">
                    <h2>History</h2>
                    <div class="about">
                      <p>
@@ -45,7 +45,7 @@
                    </p>
                    </div>
                 </div>
-                <div class="history" style="display: none" id="process">
+                <div class="show_about history <?php echo ($pagetype == 'process') ? 'show' : 'hide'?>"  id="process_s">
                    <h2>Process</h2>
                    <div class="about">
                      <p>
@@ -67,7 +67,7 @@
                    </p>
                    </div>
                 </div>
-                <div class="history" id="patina">
+                <div class="show_about history <?php echo ($pagetype == 'patina') ? 'show' : 'hide'?>" id="patina_s">
                    <h2>Patinas</h2>
                    <div class="about">
                      <p>
@@ -95,5 +95,5 @@
       </div>
     </div>
 <?php 
-  $this->load->view("frontend/footer");
+  $this->load->view("frontend/footer",array('pageName' => 'aboutus'));
 ?>    

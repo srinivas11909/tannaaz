@@ -53,5 +53,15 @@ class cmsmodel extends CI_Model{
     	}
     	return $productId;
 	}
+	public function postContactUsForm($postArray)
+	{
+		if(empty($postArray))
+		{
+			return false;
+		}
+		$sql = "INSERT INTO contactus_form_data(firstname,lastname,email,mobile,message) values(?,?,?,?,?)";
+		$this->db->query($sql,array($postArray['firstname'],$postArray['lastname'],$postArray['email'],$postArray['mobile'],$postArray['message']));
+		return true;
+	}
 }
 ?>

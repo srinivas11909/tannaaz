@@ -121,21 +121,25 @@ class uploadlibrary
 	}
 	function insertimage($FILES,$arrayofdescription,$iCount,$id,$typeofmedia)
 	{
+
         if($FILES['file1']['tmp_name'] == '')
 			return ("File uploading failed");
 
-		define("MAX_IMAGE_SIZE","1048576");
-		$sizevar = "1 Mb";
+		define("MAX_IMAGE_SIZE","5242880");
+		$sizevar = "5 Mb";
 
 	if(!$this->checktype($iCount,$FILES))
 	{
-		return("Images of type jpeg,gif,png are allowed");
+		$errorArr['status'] = 0;
+		$errorArr['error_msg'] = "Images of type jpeg,gif,png are allowed";
+		return serialize($errorArr);
 	}
 	if(!$this->checksize($FILES,$iCount,MAX_IMAGE_SIZE))
 	{
-		return("Size limit of ".$sizevar." exceeded");
+		$errorArr['status'] = 0;
+		$errorArr['error_msg'] = "Size limit of ".$sizevar." exceeded";
+		return serialize($errorArr);
 	}
-
         $ImagesPath = MEDIA_BASE_PATH."/images";
 
         if( !(file_exists($ImagesPath) && is_dir($ImagesPath)) ) {
@@ -146,7 +150,6 @@ class uploadlibrary
 		$iFlag = 1;
 		$mediaid = 0;
 		$date = date("y.m.d");
-
 		while($iFlag < $iCount)
 		{
 			//Set the values
@@ -169,7 +172,6 @@ class uploadlibrary
 
 			if(!(move_uploaded_file($FILES['file'.$iFlag]['tmp_name'],$target_location)))
 			{
-
 				if($FILES['uploadedFile']['error'] > 0)
 				{
 					switch($FILES['uploadFile'] ['error'])
@@ -229,7 +231,11 @@ class uploadlibrary
 		}
 		
 		if($TypeFlag == 0) // && $typeofmedia =='uploadFromCRDashboard') now all cases allow same file types, therefore this condition is not required
-			return ("Only pdf, ppt, pptx, doc, docx, xls, xlsx, txt, msg files are allowed");
+		{
+			$errorArr['status'] = 0;
+			$errorArr['error_msg'] = "Only pdf, ppt, pptx, doc, docx, xls, xlsx, txt, msg files are allowed";
+			return serialize($errorArr);
+		}
 
 		$iFlag = 1;
 		$iSuccess = 1;
@@ -271,7 +277,11 @@ class uploadlibrary
 			$iFlag = $iFlag + 1;
 		}
 		if(!$iSuccess)
-			return("file uploading failed.Please try again");
+		{
+			$errorArr['status'] = 0;
+			$errorArr['error_msg'] = "file uploading failed.Please try again";
+			return serialize($errorArr);
+		}
 		else
 			$returnarray["status"] = 1;
 		return serialize($returnarray);

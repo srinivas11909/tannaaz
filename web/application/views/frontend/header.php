@@ -6,14 +6,14 @@
   </head>
 
   <body>
-    <div class="top-navbar">
-      <div class="container_12">
+  <div class="top-navbar">
+      <div class="container">
         <nav class="desktop_menu">
            <ul class="flex_navbar">
              <li class="flex_li">
                <a href="JavaScript:void(0);" class="nav-title">Products</a>
                <div class="categeory_block">
-                  <div class="container_12">
+                  <div class="container">
                     <div class="innerCategory">
                       <div class="CategoryStep">
                         <h2 class="CategoryTitl">DOOR Hardware</h2>
@@ -28,19 +28,21 @@
                         <h2 class="CategoryTitl">DOOR accessories</h2>
                         <ul>
                           <li><a href="">Hinges and Finials</a></li>
-                          <li><a href="">Hinge Straps</a></li>
-                          <li><a href="">Calvos</a></li>
-                          <li><a href="">Corner Bracket</a></li>
+                          <li><a href="">Clavos, Hinge Straps &amp; Corner Brackets</a></li>
+                          <li><a href="">Door bolts</a></li>
+                          <li><a href="">Door stops</a></li>
+                          <li><a href="">Push Plates</a></li>
+                          <li><a href="">kickplates</a></li>
+                          <li><a href="">Door Knockers</a></li>
                         </ul>
                       </div>
+
                       <div class="CategoryStep">
-                        <h2 class="CategoryTitl">cabinet Hardware</h2>
-                        <ul>
-                          <li><a href="">Knobs and Roses</a></li>
-                          <li><a href="">Pulls</a></li>
-                          <li><a href="">Bin Pulls</a></li>
-                       </ul>
+                        <p><a class="CategoryTitl">window Hardware</a></p>
+                        <p><a class="CategoryTitl">Custom Works</a></p>
+                        <p><a class="CategoryTitl">Locks</a></p>
                       </div>
+
                       <div class="CategoryStep">
                         <h2 class="CategoryTitl">sliding DOOR Hardware</h2>
                         <ul>
@@ -50,21 +52,22 @@
                          </ul>
                       </div>
                       <div class="CategoryStep">
-                        <h2 class="CategoryTitl">window Hardware</h2>
+                        <h2 class="CategoryTitl">cabinet Hardware</h2>
+                        <ul>
+                          <li><a href="">Knobs</a></li>
+                          <li><a href="">Roses</a></li>
+                          <li><a href="">Bin Pulls</a></li>
+                          <li><a href="">Pulls</a></li>
+                       </ul>
                       </div>
+
+
                       <div class="CategoryStep">
                         <h2 class="CategoryTitl">Home accessories</h2>
                         <ul>
                           <li><a href="">Hooks</a></li>
                           <li><a href="">House Numbers</a></li>
-                          <li><a href="">Pocket Door Locks</a></li>
-                         </ul>
-                      </div>
-                      <div class="CategoryStep">
-                        <h2 class="CategoryTitl">Custom Works</h2>
-                      </div>
-                      <div class="CategoryStep">
-                        <h2 class="CategoryTitl">Locks</h2>
+                        </ul>
                       </div>
                     </div>
                   </div>
@@ -74,38 +77,37 @@
              <li class="flex_li">
                <a href="JavaScript:void(0);" class="nav-title">About Us</a>
                <div class="categeory_block">
-                 <div class="CategoryStep">
-                   <h2 class="CategoryTitl"><a>Company</a></h2>
-                   <h2 class="CategoryTitl"><a>Process</a></h2>
-                   <h2 class="CategoryTitl"><a>Patina</a></h2>
+                 <div class="aboutSec">
+                   <div class="CategoryStep">
+                     <h2 class="CategoryTitl"><a href="/aboutus">History</a></h2>
+                     <h2 class="CategoryTitl"><a href="/aboutus?type=process">Process</a></h2>
+                     <h2 class="CategoryTitl"><a href="/aboutus?type=patina">Patina</a></h2>
+                   </div>
                  </div>
-               </div>
+                 </div>
              </li>
-             <li class="flex_li"><a href="JavaScript:void(0);"><img src="public/images/Logo.png" alt="Tannaaz"></a></li>
+             <li class="flex_li"><a href="JavaScript:void(0);"><img src="/public/images/Logo.png" alt="Tannaaz"></a></li>
              <li class="flex_li">
                <a href="JavaScript:void(0);" class="nav-title">Contact</a>
                <div class="categeory_block">
-                 <div class="CategoryStep">
-                   <h2 class="CategoryTitl">sliding DOOR Hardware</h2>
-                   <ul>
-                     <li><a href="">Flush Pulls</a></li>
-                     <li><a href="">Lift and Slide Flush Pull</a></li>
-                     <li><a href="">Pocket Door Locks</a></li>
-                    </ul>
+                 <div class="cnt">
+                   <div class="CategoryStep">
+                       <h2 class="CategoryTitl"><a href="/contactus">Contact</a></h2>
+                       <h2 class="CategoryTitl"><a href="/contactus?type=contactus">Contact Us</a></h2>
+                   </div>
                  </div>
-               </div>
+                 </div>
              </li>
              <li class="flex_li">
                <a href="JavaScript:void(0);" class="nav-title">Search</a>
                <div class="categeory_block">
-                 <div class="CategoryStep">
-                   <h2 class="CategoryTitl">sliding DOOR Hardware</h2>
-                   <ul>
-                     <li><a href="">Flush Pulls</a></li>
-                     <li><a href="">Lift and Slide Flush Pull</a></li>
-                     <li><a href="">Pocket Door Locks</a></li>
-                    </ul>
+                 <div class="srchBlock">
+                   <div class="CategoryStep">
+                     <input type="text" name="" placeholder="Search.." class="srchme" />
+                     <i class="srch_ico"></i>
+                   </div>
                  </div>
+
                </div>
              </li>
            </ul>
@@ -189,17 +191,17 @@
                  <a>About us</a>
                  <i class="arrow_i"></i>
                   <ul class="child_ul">
-                    <li><a>History</a></li>
-                    <li><a>Process</a></li>
-                    <li><a>Patina</a></li>
+                    <li><a href="/aboutus">History</a></li>
+                    <li><a href="/aboutus?type=process">Process</a></li>
+                    <li><a href="/aboutus?type=patina">Patina</a></li>
                   </ul>
                </li>
                <li class="sub_li">
                  <a>Contact</a>
                  <i class="arrow_i"></i>
                   <ul class="child_ul">
-                    <li><a>Contact</a></li>
-                    <li><a>Contact Us</a></li>
+                    <li><a href="/contactus">Contact</a></li>
+                    <li><a href="/contactus?type=contactus">Contact Us</a></li>
                   </ul>
                </li>
              </ul>
