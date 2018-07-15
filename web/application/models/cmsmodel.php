@@ -34,18 +34,50 @@ class cmsmodel extends CI_Model{
 
 	public function saveListing($data){
 		$this->db->trans_start();
-		$product['name'] = $data['productName'];
-		$product['description'] = $data['productDesc'];
-		$this->db->insert('products',$product);
 
-		$productId = $this->db->insert_id();
+		if($data['actionType'] == 'edit'){
+			$productId = $data['listingId'];
+
+			$product['name'] = $data['productName'];
+			$product['description'] = $data['productDesc'];
+			$this->db->update('products',$product);
+		}
+		else{
+			$product['name'] = $data['productName'];
+			$product['description'] = $data['productDesc'];
+			$this->db->insert('products',$product);
+			$productId = $this->db->insert_id();
+		}
+
+		if($data['actionType'] == 'edit'){
+			$this->db->where('product_id', $productId)->update('product_attributes', array('status' => 'history'));
+		}
 		foreach ($data['attributes'] as $attributeId => $row) {
-			$productAttributes[] = array('product_id' => $productId,'attribute_id' => $attributeId,'value_1' => $row['val1'],'value_2' => $row['val2'],'value_3' => $row['val3'],'status' => 'live','unit_id' => 1);
+			$row['val2'] = empty($row['val2']) ? 0 : $row['val2'];
+			$row['val3'] = empty($row['val3']) ? 0 : $row['val3'];
+			$productAttributes[] = array('product_id' => $productId,'attribute_id' => $attributeId,'value_1' => $row['val1'],'value_2' => $row['val2'],'value_3' => $row['val3'],'status' => 'live','unit_id' => $row['unit']);
 		}
 		$this->db->insert_batch('product_attributes',$productAttributes);
 
+		if($data['actionType'] == 'edit'){
+			$this->db->where('product_id', $productId)->update('product_category_mapping', array('status' => 'history'));
+		}
 		$productMapping = array('product_id' => $productId,'category_id' => $data['category'],'subcategory_id' => $data['subcategory'],'status' => 'live');
 		$this->db->insert('product_category_mapping',$productMapping);
+
+		if($data['actionType'] == 'edit'){
+			$this->db->where('product_id', $productId)->update('product_media', array('status' => 'history'));
+		}
+		$mediaData = array();
+		foreach ($data['images'] as $row) {
+			$mediaData[] = array('product_id' => $productId, 'media_url' => $row['img_url'], 'position' => $row['position'], 'media_type' => 'image', 'file_name' => NULL, 'status' => 'live');
+		}
+		foreach ($data['files'] as $row) {
+			$mediaData[] = array('product_id' => $productId, 'media_url' => $row['file_url'], 'position' => 1, 'media_type' => 'file', 'file_name' => $row['file_name'], 'status' => 'live');
+		}
+		if(!empty($mediaData)){
+			$this->db->insert_batch('product_media', $mediaData);
+		}
 
 		$this->db->trans_complete();
     	if ($this->db->trans_status() === FALSE) {
@@ -62,6 +94,109 @@ class cmsmodel extends CI_Model{
 		$sql = "INSERT INTO contactus_form_data(firstname,lastname,email,mobile,message) values(?,?,?,?,?)";
 		$this->db->query($sql,array($postArray['firstname'],$postArray['lastname'],$postArray['email'],$postArray['mobile'],$postArray['message']));
 		return true;
+	}
+
+	public function getProductsByCategoryAndSubcategory($categoryId, $subCategoryId, $offset, $limit){
+		$sql = "SELECT SQL_CALC_FOUND_ROWS p.id,p.name, p.description, c.name as category_name, sc.name as subcategory_name from products p join product_category_mapping pcm on pcm.product_id = p.id and pcm.status = 'live'  left join categories c on c.id = pcm.category_id left join subcategories sc on sc.id = pcm.subcategory_id ";
+
+		$whereStatements = array();
+		if(!empty($categoryId)){
+			$whereStatements[] = "pcm.category_id = $categoryId";
+		}
+		if(!empty($subCategoryId)){
+			$whereStatements[] = "pcm.subcategory_id = $subCategoryId";
+		}
+		$sql .= 'where '.implode(' AND ', $whereStatements).' limit '.$offset.','.$limit;
+		$query = $this->db->query($sql)->result_array();
+
+		$sql = "SELECT FOUND_ROWS() as count";
+		$data = $this->db->query($sql)->row_array();
+		$totalCount = $data['count'];
+
+		$returnData = array();
+		$returnData['data'] = $query;
+		$returnData['totalCount'] = $totalCount;
+
+		return $returnData;
+	}
+
+	public function getListingById($listingId){
+		$sql = "SELECT p.id,p.name, p.description, c.name as category_name, sc.name as subcategory_name from products p join product_category_mapping pcm on pcm.product_id = p.id and pcm.status = 'live'  left join categories c on c.id = pcm.category_id left join subcategories sc on sc.id = pcm.subcategory_id where p.id = $listingId";
+		$query = $this->db->query($sql)->row_array();
+
+		return $query;
+	}
+
+	public function getAllListings($offset, $limit){
+		$sql = "SELECT SQL_CALC_FOUND_ROWS p.id,p.name, p.description, c.name as category_name, sc.name as subcategory_name from products p join product_category_mapping pcm on pcm.product_id = p.id and pcm.status = 'live'  left join categories c on c.id = pcm.category_id left join subcategories sc on sc.id = pcm.subcategory_id ".' limit '.$offset.','.$limit;
+		$query = $this->db->query($sql)->result_array();
+
+		$sql = "SELECT FOUND_ROWS() as count";
+		$data = $this->db->query($sql)->row_array();
+		$totalCount = $data['count'];
+
+		$returnData = array();
+		$returnData['data'] = $query;
+		$returnData['totalCount'] = $totalCount;
+
+		return $returnData;
+	}
+
+	public function getListingData($listingId){
+		$this->db->where('id', $listingId);
+		$data = $this->db->get('products')->row_array();
+		if(empty($data)){
+			return array();
+		}
+		$returnData = array();
+		$returnData['name'] = $data['name'];
+		$returnData['description'] = $data['description'];
+
+		$this->db->select('attribute_id,value_1,value_2,value_3,unit_id');
+		$this->db->where('product_id', $listingId)->where('status','live');
+		$data = $this->db->get('product_attributes')->result_array();
+		foreach ($data as $row) {
+			$returnData['attributes'][] = $row;
+		}
+
+		$this->db->select('category_id,subcategory_id');
+		$this->db->where('product_id', $listingId)->where('status','live');
+		$data = $this->db->get('product_category_mapping')->row_array();
+		if(!empty($data)){
+			$returnData['category_id'] = $data['category_id'];
+			$returnData['subcategory_id'] = $data['subcategory_id'];
+		}
+
+		$this->db->select('media_url, media_type, file_name, position');
+		$this->db->where('product_id', $listingId)->where('status','live')->order_by('position','asc');
+		$data = $this->db->get('product_media')->result_array();
+		foreach ($data as $row) {
+			$returnData['media'][$row['media_type']][] = $row;
+		}
+		return $returnData;
+	}
+
+	public function deleteListing($listingId){
+		$this->db->trans_start();
+
+		$this->db->where('id', $listingId);
+		$this->db->delete('products');
+
+		$this->db->where('product_id', $listingId);
+		$this->db->update('product_attributes', array('status' => 'deleted'));
+
+		$this->db->where('product_id', $listingId);
+		$this->db->update('product_category_mapping', array('status' => 'deleted'));
+
+		$this->db->where('product_id', $listingId);
+		$this->db->update('product_media', array('status' => 'deleted'));
+
+		$this->db->trans_complete();
+    	if ($this->db->trans_status() === FALSE) {
+    		throw new Exception('Transaction Failed');
+    	}
+
+    	return true;
 	}
 }
 ?>
