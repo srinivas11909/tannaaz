@@ -88,6 +88,7 @@
          </div>
        </div>
       </div>
+      </div>
 <?php 
   $this->load->view("frontend/footer",array('pageName' => 'contactus'));
 ?>          

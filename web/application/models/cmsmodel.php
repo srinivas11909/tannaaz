@@ -6,7 +6,7 @@ class cmsmodel extends CI_Model{
     	$this->load->database('default');
 	}
 	function checkValidUser($username,$epassword)
-	{	
+	{
 		$sql = "SELECT userid,displayname,email,ePassword FROM user where email = ? AND ePassword= ?";
 		$result = $this->db->query($sql,array($username,$epassword));
 		$row = $result->row();
@@ -34,13 +34,21 @@ class cmsmodel extends CI_Model{
 
 	public function saveListing($data){
 		$this->db->trans_start();
+		error_log('=====================');
 
 		if($data['actionType'] == 'edit'){
 			$productId = $data['listingId'];
 
+			$this->db->where('product_id', $productId)->update('products', array('status' => 'history'));
+
+
+			/*$product['name'] = $data['productName'];
+			$product['description'] = $data['productDesc'];
+			$this->db->update('products',$product);*/
 			$product['name'] = $data['productName'];
 			$product['description'] = $data['productDesc'];
-			$this->db->update('products',$product);
+			$this->db->insert('products',$product);
+			$productId = $this->db->insert_id();
 		}
 		else{
 			$product['name'] = $data['productName'];
@@ -78,7 +86,7 @@ class cmsmodel extends CI_Model{
 		if(!empty($mediaData)){
 			$this->db->insert_batch('product_media', $mediaData);
 		}
-
+		error_log('=====================');
 		$this->db->trans_complete();
     	if ($this->db->trans_status() === FALSE) {
     		throw new Exception('Transaction Failed');
@@ -180,7 +188,7 @@ class cmsmodel extends CI_Model{
 		$this->db->trans_start();
 
 		$this->db->where('id', $listingId);
-		$this->db->delete('products');
+		$this->db->update('products', array('status' => 'deleted'));
 
 		$this->db->where('product_id', $listingId);
 		$this->db->update('product_attributes', array('status' => 'deleted'));
