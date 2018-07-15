@@ -38,7 +38,7 @@
 |
 */
 
-$route['default_controller'] = "welcome";
+$route['default_controller'] = "homepage";
 $route['404_override'] = '';
 
 $route['cmsPosting/login'] = "CmsController/login";
@@ -47,12 +47,12 @@ $route['cmsPosting/viewListings'] = "CmsController/viewListings";
 $route['cmsPosting/postListing'] = "CmsController/postListing";
 $route['cmsPosting/saveListing'] = "CmsController/saveListing";
 $route['cmsPosting/editListing/([0-9]+)'] = "CmsController/editListing/$1";
-$route['aboutus'] = "HomePage/aboutUs";
-$route['contactus'] = "HomePage/contactUs";
-$route['policy'] = "HomePage/policyView";
+$route['aboutus'] = "homepage/aboutUs";
+$route['contactus'] = "homepage/contactUs";
+$route['policy'] = "homepage/policyView";
 $route['getListings/([0-9]+)/([0-9]+)'] = "CategoryPage/getCategoryPage/$1/$2";
 $route['getDetailPage/([0-9]+)'] = "ListingPage/getListingPage/$1";
-$route['search'] = "HomePage/search/";
+$route['search'] = "homepage/search/";
 
 
 

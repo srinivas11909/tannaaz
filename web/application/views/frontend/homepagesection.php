@@ -1,4 +1,4 @@
-<?php print_r($productData);die;?>
+
 <div class="mainData">
     <div id="freewall" class="free-wall">
       <div class="container">
