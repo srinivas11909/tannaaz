@@ -8,7 +8,7 @@ class detailmodel extends CI_Model{
 	}
 	function getProductsBasedOnSearch($searchText)
 	{
-		$this->db->select('p.name,pm.media_url');
+		$this->db->select('p.id,p.name,pm.media_url as media_url');
 		$this->db->from('products p');
 		$this->db->join('product_media pm','p.id = pm.product_id');
 		$this->db->like('p.name',$searchText);

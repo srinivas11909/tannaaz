@@ -263,8 +263,6 @@ var makeCustomAjaxCall = function(methodUrl, postParams, callBack, callBackCusto
 function getSearchText(e,obj)
 {
   var code = (e.keyCode ? e.keyCode : e.which);
-  window.obj = obj;
-      console.log(event);
   if(code == 13)
   {
       var searchText = $(obj).val();
@@ -278,5 +276,13 @@ function getSearchText(e,obj)
   {
       return;
   }
-
+}
+function redirectToSearchPage(obj)
+{
+    var searchText = $(obj).val();
+    searchText = $.trim(searchText);
+    if(searchText != '' && typeof searchText != 'undefined')
+    {
+        window.location = '/search/?q='+searchText;
+    } 
 }

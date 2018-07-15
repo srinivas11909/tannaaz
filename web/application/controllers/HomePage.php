@@ -76,8 +76,16 @@ class HomePage extends CI_Controller
 		$searchText = $_GET['q'];
 		$results = $this->detailmodel->getProductsBasedOnSearch($searchText);
 		$displayData = array();
-		$displayData['listingData'] = $results;
-		$displayData['searchCount'] = count($results);
+
+		foreach ($results as $key => $row) {
+			$listingData[$key] = $row;
+			$listingData[$key]['listingUrl'] = '/getDetailPage/'.$row['id'];
+		}
+
+		$displayData['searchCount'] = count($listingData);
+		$displayData['listingData'] = $listingData;
+		$displayData['pagetype'] = 'searchpage';
+		$displayData['searchText'] = $searchText;
 		$this->load->view('frontend/categorypage',$displayData);
 	}
 }

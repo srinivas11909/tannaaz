@@ -103,8 +103,8 @@
                <div class="categeory_block">
                  <div class="srchBlock">
                    <div class="CategoryStep">
-                     <input type="text" name="" placeholder="Search.." onkeypress="getSearchText(event,this)" class="srchme" />
-                     <i class="srch_ico"></i>
+                     <input type="text" id="searchtxt" name="" placeholder="Search.." onkeypress="getSearchText(event,this)" class="srchme" />
+                     <i class="srch_ico" onclick="redirectToSearchPage(searchtxt)"></i>
                    </div>
                  </div>
 
