@@ -43,7 +43,7 @@ class CmsController extends CI_Controller{
 		$currentPage = $this->input->post('currentPage',true) == '' ? 1 : $this->input->post('currentPage',true);
 
 		$listings = array();
-		$pageLimit = 4;
+		$pageLimit = 20;
 		$offset = ($currentPage - 1)*$pageLimit;
 		$numberOfPagesToShow = 3;
 
