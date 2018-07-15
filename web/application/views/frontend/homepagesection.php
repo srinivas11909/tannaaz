@@ -1,3 +1,4 @@
+<?php print_r($productData);die;?>
 <div class="mainData">
     <div id="freewall" class="free-wall">
       <div class="container">
@@ -9,20 +10,20 @@
                   <div class="block">
                     <a class="hoverDiv">
                       <div class="imgName">
-                        Door <br/> Hardware
+                        <?php echo $productData[0]['name']?>
                       </div>
                     </a>
                     <a>
-                      <img src="/public/images/door/TaannazLever.jpg" alt="">
+                      <img src="<?php echo $productData[0]['media_url']?>" alt="">
                     </a>
                   </div>
                   <div class="block">
                     <a>
-                      <img src="/public/images/Cabinethardware/TaannazBinpull.jpg" alt="">
+                      <img src="<?php echo $productData[1]['media_url']?>" alt="">
                     </a>
                     <a class="hoverDiv">
                       <div class="imgName">
-                        Door <br/> Hardware
+                        <?php echo $productData[1]['name']?>
                       </div>
                     </a>
                   </div>
@@ -30,11 +31,11 @@
                 <td class="side-cell">
                   <div class="block">
                     <a>
-                      <img src="/public/images/sliding/slide.jpg" alt="sliding">
+                      <img src="<?php echo $productData[2]['media_url']?>" alt="sliding">
                     </a>
                     <a class="hoverDiv">
                       <div class="imgName">
-                        Door <br/> Hardware
+                        <?php echo $productData[2]['name']?>
                       </div>
                     </a>
                   </div>
@@ -44,11 +45,11 @@
                 <td class="half-cell">
                   <div class="block">
                     <a>
-                      <img src="/public/images/sliding/slide.jpg" alt="sliding">
+                      <img src="<?php echo $productData[3]['media_url']?>" alt="sliding">
                     </a>
                     <a class="hoverDiv">
                       <div class="imgName">
-                        Door <br/> Hardware
+                        <?php echo $productData[3]['name']?>
                       </div>
                     </a>
                   </div>
@@ -56,21 +57,21 @@
                 <td class="side-cell">
                   <div class="block">
                     <a>
-                      <img src="/public/images/door/TaannazLever.jpg" alt="">
+                      <img src="<?php echo $productData[4]['media_url']?>" alt="">
                     </a>
                     <a class="hoverDiv">
                       <div class="imgName">
-                        Door <br/> Hardware
+                        <?php echo $productData[4]['name']?>
                       </div>
                     </a>
                   </div>
                   <div class="block">
                     <a>
-                      <img src="/public/images/Windowhardware/TaannazSashlock.jpg" alt="">
+                      <img src="<?php echo $productData[5]['media_url']?>" alt="">
                     </a>
                     <a class="hoverDiv">
                       <div class="imgName">
-                        Door <br/> Hardware
+                        <?php echo $productData[5]['name']?>
                       </div>
                     </a>
                   </div>
@@ -80,11 +81,11 @@
                 <td class="full-cell" colspan="2">
                   <div class="block">
                     <a>
-                      <img src="/public/images/Customisation/WritingDesk.jpg" alt="">
+                      <img src="<?php echo $productData[6]['media_url']?>" alt="">
                     </a>
                     <a class="hoverDiv">
                       <div class="imgName">
-                        Door <br/> Hardware
+                        <?php echo $productData[6]['name']?>
                       </div>
                     </a>
                   </div>
@@ -100,14 +101,4 @@
       </div>
 		</div>
     <div class="bgLayer"></div>
-
-    <!--footer start-->
-    <div class="footer">
-      <footer>
-        <div class="container">
-          <p class="text-right"><a href="">Policy</a> <span> &copy; 2018 Taanaz Bronzze Pvt.Ltd</span></p>
-        </div>
-      </footer>
-    </div>
-    <!--footer ends-->
   </div>

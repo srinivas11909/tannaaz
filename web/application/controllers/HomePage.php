@@ -4,8 +4,10 @@ class HomePage extends CI_Controller
 
 	function index()
 	{
-		print_r($this);
-		$this->load->view('frontend/homepage');
+		$this->load->model('detailmodel');
+		$productData = $this->detailmodel->getFirstImageForAllCategories();
+		$displayData['productData'] = $productData;
+		$this->load->view('frontend/homepage',$displayData);
 	}
 
 	function aboutUs()

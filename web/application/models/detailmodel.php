@@ -19,5 +19,19 @@ class detailmodel extends CI_Model{
 		$result = $this->db->get()->result_array();
 		return $result;
 	}
+	function getFirstImageForAllCategories()
+	{
+		$this->db->select('c.id,c.name,max(pm.media_url) as media_url');
+		$this->db->from('categories c');
+		$this->db->join('product_category_mapping pcm','pcm.category_id = c.id');
+		$this->db->join('product_media pm','pm.product_id = pcm.product_id');
+		$this->db->where('pm.media_type','image');
+		$this->db->where('pm.position','1');
+		$this->db->where('pm.status','live');
+		$this->db->where('pcm.status','live');
+		$this->db->group_by('c.id');
+		$result = $this->db->get()->result_array();
+		return $result;
+	}
 }
 ?>
