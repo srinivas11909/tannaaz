@@ -129,7 +129,7 @@ class cmsmodel extends CI_Model{
 	}
 
 	public function getListingById($listingId){
-		$sql = "SELECT p.id,p.name, p.description, c.name as category_name, sc.name as subcategory_name from products p join product_category_mapping pcm on pcm.product_id = p.id and pcm.status = 'live'  left join categories c on c.id = pcm.category_id left join subcategories sc on sc.id = pcm.subcategory_id where p.id = $listingId";
+		$sql = "SELECT p.id,p.name, p.description,c.id as category_id, sc.id as subcategory_id, c.name as category_name, sc.name as subcategory_name from products p join product_category_mapping pcm on pcm.product_id = p.id and pcm.status = 'live'  left join categories c on c.id = pcm.category_id left join subcategories sc on sc.id = pcm.subcategory_id where p.id = $listingId";
 		$query = $this->db->query($sql)->row_array();
 
 		return $query;
@@ -205,6 +205,11 @@ class cmsmodel extends CI_Model{
     	}
 
     	return true;
+	}
+
+	public function getListingAttributes($listingId){
+		$sql = "SELECT pa.product_id, pa.attribute_id, pa.value_1, pa.value_2, pa.value_3, pa.unit_id, at.attribute_name from product_attributes pa join attributes at on at.id = pa.attribute_id where pa.status='live' and pa.product_id = $listingId";
+		return $this->db->query($sql)->result_array();
 	}
 
 	public function getMedia($listingIds){

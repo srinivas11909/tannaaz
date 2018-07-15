@@ -51,6 +51,7 @@ $route['aboutus'] = "HomePage/aboutUs";
 $route['contactus'] = "HomePage/contactUs";
 $route['policy'] = "HomePage/policyView";
 $route['getListings/([0-9]+)/([0-9]+)'] = "CategoryPage/getCategoryPage/$1/$2";
+$route['getDetailPage/([0-9]+)'] = "ListingPage/getListingPage/$1";
 
 
 

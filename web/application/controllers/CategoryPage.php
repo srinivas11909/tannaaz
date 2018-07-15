@@ -34,8 +34,9 @@ class CategoryPage extends CI_Controller {
 		$totalCount = $dbData['totalCount'];
 
 		$listingIds = array();
-		foreach ($data as $row) {
+		foreach ($data as $key => $row) {
 			$listingIds[] = $row['id'];
+			$data[$key]['listingUrl'] = '/getDetailPage/'.$row['id'];
 		}
 
 		$listingData = array();

@@ -117,7 +117,7 @@
              <div class="flex_m m_search">search</div>
              <div class="flex_m logo_m">
                <a href="javascript:void(0);">
-                 <img src="public/images/Logo.png" alt="">
+                 <img src="/public/images/Logo.png" alt="">
                </a>
              </div>
              <div class="flex_m ham">
