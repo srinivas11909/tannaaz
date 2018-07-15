@@ -1,6 +1,12 @@
 <?php 
 class HomePage extends CI_Controller
 {
+
+	function index()
+	{
+		$this->load->view('frontend/homepage');
+	}
+
 	function aboutUs()
 	{
 		$pagetype = $_GET['type'];

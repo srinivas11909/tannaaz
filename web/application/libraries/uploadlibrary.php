@@ -165,8 +165,15 @@ class uploadlibrary
 			$size = $FILES['file'.$iFlag]['size'];
 			$target_location = $ImagesPath."/".$name_id.'.'.$ext;
 			$name = $FILES['file'.$iFlag]['name'];
+
+			$varientExtension = (strtolower($ext) == 'jpeg') ? 'jpg' : $ext;
 			
 			$imageurl = "/mediadata/images/".$name_id.'.'.$ext;
+			$image153x153   = $ImagesPath."/".$name_id."_m.".$varientExtension;
+			$image98x98  = $ImagesPath."/".$name_id."_s.".$varientExtension;
+			$image350x350 = $ImagesPath."/".$name_id."_l.".$varientExtension;
+			
+
 			
 			$description = $arrayofdescription['description'.$iFlag];
 
@@ -191,6 +198,14 @@ class uploadlibrary
 			}
 			else
 			{
+				$this->CI->load->library('ProcessImage');
+				$imagePaddingObj = new ProcessImage();
+				$imagePaddingObj->load($target_location);
+				$imagePaddingObj->processImage(98, 98); $imagePaddingObj->output($image98x98); 
+				$imagePaddingObj->processImage(153,153); $imagePaddingObj->output($image153x153);  
+				$imagePaddingObj->processImage(350, 350); $imagePaddingObj->output($image350x350);
+
+
 				$returnarray[$iFlag-1]['imageurl']= $imageurl;
 			}
 			$iFlag = $iFlag + 1;

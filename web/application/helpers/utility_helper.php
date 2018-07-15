@@ -17,4 +17,30 @@
 	    echo '<pre>'.print_r($data,TRUE).'</pre>';
 	}
 
+
+function getImageVariant($imageLink, $variantIdentifier = '')
+{
+	switch ($variantIdentifier) {
+		case 's':
+			$imageUrlIdentifier = '_s';
+			break;
+		case 'm':
+			$imageUrlIdentifier = '_m';
+			break;
+		case 'l':
+			$imageUrlIdentifier = '_l';
+			break;
+		default:
+			$imageUrlIdentifier = '';
+			break;
+	}
+	$imageString = substr($imageLink,0,(strrpos($imageLink,'.')));
+	$imageExt = substr($imageLink,(strrpos($imageLink,'.')+1),strlen($imageLink));
+	$imageExt = strtolower($imageExt);
+	$imageExt = ($imageExt == 'jpeg' ? 'jpg' : $imageExt);
+	
+	return $imageString.$imageUrlIdentifier.'.'.$imageExt; 
+}
+
+
 ?>

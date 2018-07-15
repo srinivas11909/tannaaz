@@ -243,7 +243,7 @@ class CmsController extends CI_Controller{
 			$response['data'] = array("imageurl" 	=> $uploadResponse[0]['imageurl']);
 		}
 		else {
-			$response['data']['error']['msg'] = "Image could not be uploaded.";
+			$response['data']['error']['msg'] = !empty($uploadResponse) ? $uploadResponse : "Image could not be uploaded.";
 		}
 		echo json_encode($response);
 
