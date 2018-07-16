@@ -27,7 +27,6 @@ class ListingPage extends CI_Controller {
 		$displayData['listingData'] = $listingData;
 		$displayData['inputCategoryId'] = $dbData['category_id'];
 		$displayData['inputSubcategoryId'] = $dbData['subcategory_id'];
-		// _p($displayData);die;
 		$this->load->view('frontend/listingdetailpage', $displayData);
 	}
 }

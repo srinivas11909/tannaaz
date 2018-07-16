@@ -19,6 +19,20 @@ class HomePage extends CI_Controller
 		}
 		$displayData = array();
 		$displayData['pagetype'] = $pagetype;
+		$this->load->library('cmslibrary');
+
+		$categoryTree = $this->cmslibrary->getCategoriesTree();
+		$categoryUrls = array();
+		foreach ($categoryTree as $row) {
+			$categoryUrls[$row['categoryId']]['url'] = '/getListings/'.$row['categoryId'];
+			foreach ($row['subcategories'] as $subcatRow) {
+				$categoryUrls[$row['categoryId']]['subcategoryUrls'][$subcatRow['subcategoryId']] = '/getListings/'.$row['categoryId'].'/'.$subcatRow['subcategoryId'];
+			}
+		}
+
+		$displayData['categoryUrls'] = $categoryUrls;
+		$displayData['categoryTree'] = $categoryTree;
+
 		$this->load->view('frontend/aboutus',$displayData);
 	}
 	function contactUs()
@@ -30,6 +44,20 @@ class HomePage extends CI_Controller
 		}
 		$displayData = array();
 		$displayData['pagetype'] = $pagetype;
+
+		$this->load->library('cmslibrary');
+
+		$categoryTree = $this->cmslibrary->getCategoriesTree();
+		$categoryUrls = array();
+		foreach ($categoryTree as $row) {
+			$categoryUrls[$row['categoryId']]['url'] = '/getListings/'.$row['categoryId'];
+			foreach ($row['subcategories'] as $subcatRow) {
+				$categoryUrls[$row['categoryId']]['subcategoryUrls'][$subcatRow['subcategoryId']] = '/getListings/'.$row['categoryId'].'/'.$subcatRow['subcategoryId'];
+			}
+		}
+
+		$displayData['categoryUrls'] = $categoryUrls;
+		$displayData['categoryTree'] = $categoryTree;
 		$this->load->view('frontend/contactUs',$displayData);
 	}
 	function policyView()
