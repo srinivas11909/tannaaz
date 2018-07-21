@@ -12,7 +12,6 @@ class detailmodel extends CI_Model{
 		$this->db->from('products p');
 		$this->db->join('product_media pm','p.id = pm.product_id');
 		$this->db->like('p.name',$searchText);
-		$this->db->where('p.status','live');
 		$this->db->where('pm.status','live');
 		$this->db->where('pm.position','1');
 		$this->db->where('pm.media_type','image');
