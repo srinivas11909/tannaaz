@@ -122,7 +122,7 @@ $buttonBg2 = "#e2e2e2";
 			else {
 			   $.post('/UserController/doLogin',{'username':email,'mpassword':(password)},function(data) {
 				   if(parseInt(data) > 0) {
-					   window.location = '/CmsController/success';
+					   window.location = '/CmsController/viewListings';
 				   }
 				   else {
 					   $('#error_login').html('Incorrect account details. Please enter valid login email Id & password.');

@@ -263,6 +263,7 @@ var makeCustomAjaxCall = function(methodUrl, postParams, callBack, callBackCusto
 function getSearchText(e,obj)
 {
   var code = (e.keyCode ? e.keyCode : e.which);
+  alert(1);
   if(code == 13)
   {
       var searchText = $(obj).val();

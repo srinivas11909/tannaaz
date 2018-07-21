@@ -459,3 +459,14 @@ var makeCustomAjaxCall = function(methodUrl, postParams, callBack, callBackCusto
     });
     return request;
 }
+function logout()
+{
+  makeCustomAjaxCall("/UserController/logout/", {}, 'logoutCallBack'); 
+}
+function logoutCallBack(response)
+{
+  if(response && response == 1)
+  {
+    window.location.href = "/cmsPosting/login";
+  }
+}

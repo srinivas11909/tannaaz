@@ -16,9 +16,21 @@ class UserController extends CI_Controller{
 		if(!empty($userArray) && is_array($userArray))
 		{
 			$value = $userArray['cookiestr'];
-			setcookie('user',$value,time() + 2592000,'/',COOKIEDOMAIN);
+			setcookie('user',$value,time() + (86400 * 30),'/',COOKIEDOMAIN);
 		}
 		echo $userArray['userId'];
+	}
+	function logOut()
+	{
+		$this->load->library('cmslibrary');
+		$result = $this->cmslibrary->checkValidUser();
+		if($result)
+		{
+			setcookie('user','',0,'/',COOKIEDOMAIN);	
+			echo 1;
+			exit();
+		}
+		echo 0;exit();
 	}
 	function test()
 	{

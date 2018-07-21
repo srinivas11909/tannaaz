@@ -34,7 +34,6 @@ class cmsmodel extends CI_Model{
 
 	public function saveListing($data){
 		$this->db->trans_start();
-		error_log('=====================');
 
 		if($data['actionType'] == 'edit'){
 			$productId = $data['listingId'];
@@ -86,7 +85,6 @@ class cmsmodel extends CI_Model{
 		if(!empty($mediaData)){
 			$this->db->insert_batch('product_media', $mediaData);
 		}
-		error_log('=====================');
 		$this->db->trans_complete();
     	if ($this->db->trans_status() === FALSE) {
     		throw new Exception('Transaction Failed');

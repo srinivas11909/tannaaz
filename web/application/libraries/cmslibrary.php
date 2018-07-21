@@ -9,8 +9,16 @@ class cmslibrary {
 		$this->CI->load->model('cmsmodel');
 	}
 
-	function checkValidUser($strcookie,$type='login')
+	function checkValidUser($strcookie,$type='default')
 	{
+		if(empty($strcookie) && $type == 'login')
+			return;
+
+		if(empty($strcookie))
+		{
+			$cookiestr = isset($_COOKIE['user']) ? $_COOKIE['user'] : '';	
+			$strcookie = $cookiestr;
+		}
 		if(empty($strcookie))
 			return;
 		$values = explode('|', $strcookie);

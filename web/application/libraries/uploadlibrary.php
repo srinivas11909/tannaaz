@@ -198,14 +198,6 @@ class uploadlibrary
 			}
 			else
 			{
-				$this->CI->load->library('ProcessImage');
-				$imagePaddingObj = new ProcessImage();
-				$imagePaddingObj->load($target_location);
-				$imagePaddingObj->processImage(98, 98); $imagePaddingObj->output($image98x98); 
-				$imagePaddingObj->processImage(153,153); $imagePaddingObj->output($image153x153);  
-				$imagePaddingObj->processImage(350, 350); $imagePaddingObj->output($image350x350);
-
-
 				$returnarray[$iFlag-1]['imageurl']= $imageurl;
 			}
 			$iFlag = $iFlag + 1;

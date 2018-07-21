@@ -21,7 +21,7 @@ class detailmodel extends CI_Model{
 	}
 	function getFirstImageForAllCategories()
 	{
-		$this->db->select('c.id,c.name,max(pm.media_url) as media_url');
+		$this->db->select('c.id,c.name,max(pm.media_url) as media_url,max(pcm.category_id) as catId,min(pcm.subcategory_id) as subcatId');
 		$this->db->from('categories c');
 		$this->db->join('product_category_mapping pcm','pcm.category_id = c.id');
 		$this->db->join('product_media pm','pm.product_id = pcm.product_id');

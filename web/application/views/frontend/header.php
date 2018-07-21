@@ -73,7 +73,7 @@
                                 </div>
                             </div>
                         </li>
-                        <li class="flex_li"><a href="JavaScript:void(0);"><img src="/public/images/Logo.png" alt="Tannaaz"></a></li>
+                        <li class="flex_li"><a href="/"><img src="/public/images/Logo.png" alt="Tannaaz"></a></li>
                         <li class="flex_li">
                             <a href="JavaScript:void(0);" class="nav-title">Contact</a>
                             <div class="categeory_block">
@@ -90,7 +90,7 @@
                             <div class="categeory_block">
                                 <div class="srchBlock">
                                     <div class="CategoryStep">
-                                        <input type="text" name="" placeholder="Search.." class="srchme" />
+                                        <input type="text" id="searchtxt" name="" placeholder="Search.." class="srchme" onclick="getSearchText(event,this)" />
                                         <i class="srch_ico"></i>
                                     </div>
                                 </div>

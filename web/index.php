@@ -18,8 +18,7 @@
  * NOTE: If you change these, also change the error_reporting() code below
  *
  */
-//phpinfo();die;
-	define('ENVIRONMENT', 'development');
+define('ENVIRONMENT', 'development');
 /*
  *---------------------------------------------------------------
  * ERROR REPORTING

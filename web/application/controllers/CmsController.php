@@ -9,14 +9,26 @@ class CmsController extends CI_Controller{
 
 	function isLogin()
 	{
-		$loginUser = $this->checkUserValidation();
-		if((empty($loginUser))||(empty($loginUser['userId']))) {
+		$this->load->library('cmslibrary');
+		$loginUser = $this->cmslibrary->checkValidUser();
+		if((empty($loginUser))) {
 		    header('location:/CmsController/login');
 		    exit();
 		}
 	}
 	function login(){
-		$this->load->view('login');
+		$this->load->library('cmslibrary');
+		$loginUser = $this->cmslibrary->checkValidUser();
+
+		if(!empty($loginUser))
+		{
+			header('location:/CmsController/viewListings');
+		    exit();
+		}
+		else
+		{
+			$this->load->view('login');
+		}
 	}
 	
 	function success()
@@ -27,12 +39,14 @@ class CmsController extends CI_Controller{
 	}
 
 	function deleteListing($listingId){
+		$this->isLogin();
 		$this->load->model('cmsmodel');
 		$this->cmsmodel->deleteListing($listingId);
 		echo json_encode(array('data' => array('message' => 'Listing with id: '.$listingId.' deleted successfully','status' => 'success')));
 	}
 
 	function viewListings(){
+		$this->isLogin();
 		$this->load->model('cmsmodel');
 		$this->load->library('cmslibrary');
 
@@ -126,6 +140,7 @@ class CmsController extends CI_Controller{
 	}
 
 	function postListing(){
+		$this->isLogin();
 		$this->load->library('cmslibrary');
 		$this->load->config('listingConfig');
 
@@ -143,6 +158,7 @@ class CmsController extends CI_Controller{
 	}
 
 	function editListing($listingId){
+		$this->isLogin();
 		$this->load->library('cmslibrary');
 		$this->load->model('cmsmodel');
 		$this->load->config('listingConfig');
@@ -250,6 +266,7 @@ class CmsController extends CI_Controller{
     }
 
 	function saveListing(){
+		$this->isLogin();
 		$data['productName'] = $this->input->post('productName');
 		$data['productDesc'] = $this->input->post('productDesc');
 		$data['category'] = $this->input->post('category');
