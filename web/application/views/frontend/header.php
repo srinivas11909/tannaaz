@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:fb="https://www.facebook.com/2008/fbml">
+<html>
     <head>
     <?php $this->load->view("frontend/headerJsCss"); ?>
     </head>

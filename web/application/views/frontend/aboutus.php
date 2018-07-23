@@ -1,6 +1,6 @@
 <?php 
   $header = array(
-      'css' => array('aboutus')
+      'css' => array()
     );
   $this->load->view("frontend/header",$header);
 ?>

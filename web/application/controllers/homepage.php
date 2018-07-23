@@ -90,7 +90,7 @@ class HomePage extends CI_Controller
 		if($result)
 		{
 			//error_log('===================');
-			//$this->taannazlibrary->sendMail($postArray);
+			$this->taannazlibrary->sendMail($postArray);
 			echo json_encode(array('data'=>"success"));
 		}
 		else
