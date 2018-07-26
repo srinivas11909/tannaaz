@@ -48,6 +48,8 @@
 $active_group = 'default';
 $active_record = TRUE;
 
+$url = parse_url(getenv("CLEARDB_DATABASE_URL"));
+
 $db['default']['hostname'] = 'localhost';
 $db['default']['username'] = 'root';
 $db['default']['password'] = 'reddy';
