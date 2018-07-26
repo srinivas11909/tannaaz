@@ -49,11 +49,15 @@ $active_group = 'default';
 $active_record = TRUE;
 
 $url = parse_url(getenv("CLEARDB_DATABASE_URL"));
+$cleardb_server   = $cleardb_url["host"];
+$cleardb_username = $cleardb_url["user"];
+$cleardb_password = $cleardb_url["pass"];
+$cleardb_db       = substr($cleardb_url["path"],1);
 
-$db['default']['hostname'] = 'localhost';
-$db['default']['username'] = 'root';
-$db['default']['password'] = 'reddy';
-$db['default']['database'] = 'taannaz';
+$db['default']['hostname'] = $cleardb_server;
+$db['default']['username'] = $cleardb_username;
+$db['default']['password'] = $cleardb_password;
+$db['default']['database'] = $cleardb_db ;
 $db['default']['dbdriver'] = 'mysql';
 $db['default']['dbprefix'] = '';
 $db['default']['pconnect'] = TRUE;
